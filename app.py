@@ -237,4 +237,3 @@ Basit model şu formülü kullanır:
             "Not: Bu bir karar destek aracıdır, karar verici değil. Nihai kararı her zaman mühendis verir "
             "(bkz. Hafta 2 ders notu, Bölüm: Model Eğitildikten Sonra Nasıl Kullanılır?)."
         )
-)
