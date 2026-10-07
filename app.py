@@ -30,6 +30,12 @@ st.markdown(f"""
     .main {{ background-color: #F4F7FA; }}
     .stApp header {{ background-color: transparent; }}
     h1 {{ color: {NAVY}; }}
+    .main h2, .main h3, .main h4 {{
+        color: {NAVY} !important;
+    }}
+    .main label {{
+        color: #334155 !important;
+    }}
     .app-header {{
         background-color: {NAVY};
         padding: 1.3rem 1.6rem;
@@ -72,8 +78,8 @@ st.markdown(f"""
 
 st.markdown("""
 <div class="app-header">
-    <h1>🏗️ İnşaat Proje Süre Tahmin Aracı</h1>
-    <p>İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları — Hafta 2 Lab Projesi</p>
+    <h1>🏗️ İnşaat Süre Tahmin Aracı</h1>
+    <p>İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -103,9 +109,9 @@ except FileNotFoundError:
 st.sidebar.markdown("### ⚙️ Model Seçimi")
 model_secimi = st.sidebar.radio(
     "Hangi modeli kullanmak istersiniz?",
-    ["Basit Model (Hücre 5)", "Gelişmiş Model (Hücre 5 — Devam)"],
+    ["Basit Model", "Gelişmiş Model"],
     help="Basit model sadece alan ve kat sayısını kullanır. Gelişmiş model "
-         "zemin sınıfı ve inşaat yılını da ekler (bkz. Hafta 2 ders notu).",
+         "zemin sınıfı ve inşaat yılını da ekler.",
 )
 gelismis_mi = model_secimi.startswith("Gelişmiş")
 
@@ -115,20 +121,11 @@ if gelismis_mi:
     m = meta["gelismis_model"]
     st.sidebar.metric("Test R²", f"{m['r2']:.3f}")
     st.sidebar.metric("Train R²", f"{m['train_r2']:.3f}")
-    st.sidebar.metric("Test MAE", f"{m['mae']:,.1f} ay")
-    st.sidebar.caption(
-        "⚠️ Train R² ile Test R² arasındaki büyük fark, bu modelin "
-        "**aşırı öğrenme (overfitting)** riski taşıdığını gösterir — "
-        "Hafta 2'de birlikte incelediğimiz konu tam olarak budur."
-    )
+    st.sidebar.metric("Test MAE", f"{m['mae']:.1f} ay")
 else:
     m = meta["basit_model"]
     st.sidebar.metric("Test R²", f"{m['r2']:.3f}")
-    st.sidebar.metric("Test MAE", f"{m['mae']:,.1f} ay")
-    st.sidebar.caption(
-        "⚠️ R² negatif — bu, modelin sadece 2 değişkenle (alan, kat) "
-        "yeterince açıklayıcı olmadığının işaretidir."
-    )
+    st.sidebar.metric("Test MAE", f"{m['mae']:.1f} ay")
 st.sidebar.markdown("---")
 st.sidebar.caption(f"Eğitim verisi: {meta['n_proje']} proje kaydı")
 
@@ -196,8 +193,8 @@ if st.button("⏱️ Süreyi Tahmin Et", type="primary", use_container_width=Tru
     if uyarilar:
         st.markdown(f"""
         <div class="result-box" style="background-color:{RED};">
-            <div class="value">{tahmin:,.1f} ay</div>
-            <div class="label">Tahmini İnşaat Süresi — GÜVENİLİR DEĞİL</div>
+           <div class="value">{tahmin:.1f} ay</div>
+           <div class="label">Tahmini İnşaat Süresi</div>
         </div>
         """, unsafe_allow_html=True)
         st.markdown(
@@ -209,7 +206,7 @@ if st.button("⏱️ Süreyi Tahmin Et", type="primary", use_container_width=Tru
     else:
         st.markdown(f"""
         <div class="result-box">
-            <div class="value">{tahmin:,.1f} ay</div>
+          <div class="value">{tahmin:.1f} ay</div>
             <div class="label">Tahmini İnşaat Süresi</div>
         </div>
         """, unsafe_allow_html=True)
@@ -240,10 +237,4 @@ Basit model şu formülü kullanır:
             "Not: Bu bir karar destek aracıdır, karar verici değil. Nihai kararı her zaman mühendis verir "
             "(bkz. Hafta 2 ders notu, Bölüm: Model Eğitildikten Sonra Nasıl Kullanılır?)."
         )
-
-st.markdown("---")
-st.caption(
-    "Bu araç, Hafta 2 dersinde eğitilip Google Drive'a kaydedilen modelin "
-    "kod yazmayan kullanıcılar için bir web arayüzüne taşınmış hâlidir. "
-    "İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları | 4. Sınıf | Güz Yarıyılı"
 )
