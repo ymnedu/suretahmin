@@ -79,7 +79,7 @@ st.markdown(f"""
 st.markdown("""
 <div class="app-header">
     <h1>🏗️ İnşaat Süre Tahmin Aracı</h1>
-    <p>İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları</p>
+    <p>İnşaat Mühendisliğinde Yapay Zekâ Uygulamaları - Mustafa Yaman - 2021232074 - 530 395 9851</p>
 </div>
 """, unsafe_allow_html=True)
 
